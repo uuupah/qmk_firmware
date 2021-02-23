@@ -37,23 +37,14 @@
 #define ctrl_v LCTL(KC_V)
 
 enum custom_keycodes {
-    QMKBEST = SAFE_RANGE,
     vsc_clg,
     vsc_pin,
-    MY_OTHER_MACRO,
+    vsc_fexp,
+    vsc_trim,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case QMKBEST:
-            if (record->event.pressed) {
-                // when keycode QMKBEST is pressed
-                SEND_STRING("QMK is the best thing ever!");
-            } else {
-                // when keycode QMKBEST is released
-            }
-            break;
-
         case vsc_clg:
             if (record->event.pressed) {
                 // when keycode QMKURL is pressed
@@ -68,8 +59,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 SEND_STRING(SS_LCTL("k"));
                 SEND_STRING(SS_LSFT(SS_TAP(X_ENTER)));
-            } else {}
-            break;            
+            } else {
+            }
+            break;
+
+        case vsc_fexp:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("k"));
+                SEND_STRING("r");
+            } else {
+            }
+            break;
+
+        case vsc_trim:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("k"));
+                SEND_STRING(SS_LCTL("x"));
+            } else {
+            }
+            break;
     }
     return true;
 };
@@ -77,6 +85,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_BASE] = LAYOUT_ortho_3x10(
-        KC_ESC, KC_F5,  KC_E,   KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    vsc_fmt, 
-        win_l,  KC_S,   KC_D,   KC_F_L3, KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    vsc_clg, 
-        ctrl_z, ctrl_x, ctrl_c, ctrl_v,  KC_SPL2, KC_B_L1, KC_N_L5, KC_MALT, KC_BSCT, vsc_pin)};
+        KC_ESC, KC_F5, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, vsc_fexp, vsc_fmt, 
+        win_l, KC_S, KC_D, KC_F_L3, KC_G, KC_H, KC_J, KC_K, vsc_trim, vsc_clg, 
+        ctrl_z, ctrl_x, ctrl_c, ctrl_v, TG(1), KC_B_L1, KC_N_L5, KC_MALT, KC_BSCT, vsc_pin),
+        
+    [_FN1] = LAYOUT_ortho_3x10(
+        KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y,  KC_U, KC_I, KC_O, KC_P, 
+        KC_A, KC_S, KC_D, KC_F, KC_G, KC_H,  KC_J, KC_K, KC_L, KC_ENT, 
+        KC_Z, KC_X, KC_C, KC_V, TG(1),KC_SPC,KC_B, KC_N, KC_M, KC_BSPC)
+        };
